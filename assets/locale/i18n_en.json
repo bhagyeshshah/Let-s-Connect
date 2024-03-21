@@ -1,3 +1,4 @@
 {
-    "key_app_name": "Let's Connect"
+    "key_app_name": "Let's Connect",
+    "key_user_not_verified_error": "Please confirm your registered email address"
 }

@@ -42,7 +42,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.lets_connect"
+        applicationId "com.letsconnect.app.live"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion
@@ -63,7 +63,7 @@ android {
     productFlavors{
         dev{
             dimension "falvors"
-            applicationId = "com.letsconnect.app.dev"
+            applicationId = "com.letsconnect.app.development"
         }
         qa{
             dimension "falvors"
