@@ -58,6 +58,26 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "falvors"
+    productFlavors{
+        dev{
+            dimension "falvors"
+            applicationId = "com.letsconnect.app.dev"
+        }
+        qa{
+            dimension "falvors"
+            applicationId = "com.letsconnect.app.qa"
+        }
+        uat{
+            dimension "falvors"
+            applicationId = "com.letsconnect.app.uat"
+        }
+        prod{
+            dimension "falvors"
+            applicationId = "com.letsconnect.app.live"
+        }
+    }
 }
 
 flutter {
