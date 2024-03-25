@@ -1,6 +1,6 @@
 {
     "key_app_name": "Let's Connect !!",
-    "key_user_not_verified_error": "Please confirm your registered email address",
+    "key_user_not_verified_error": " We have sent you a verification email. Please verify your email address to continue.",
     "key_email_required": "Email is required",
     "key_email_length_validation": "Email cannot be more than 256 characters",
     "key_please_enter_valid_email": "Please enter a valid email address",
@@ -21,5 +21,9 @@
     "key_sign_up": "Sign Up",
     "key_submit": "Submit",
     "key_already_account": "Already have an account?",
-    "key_password_required": "Password is required"
+    "key_password_required": "Password is required",
+    "key_verification_required": "Verification Required",
+    "key_verification_required_subtitle": "Thank you for signing up. We have sent you a verification email. Please verify your email address to continue.",
+    "key_ok": "OK",
+    "key_sign_out": "Sign Out"
 }

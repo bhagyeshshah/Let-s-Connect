@@ -40,7 +40,7 @@ class AppFlowBloc extends Bloc<AppFlowEvent, AppFlowState>{
       //Showing splash screen
       await Future.delayed(const Duration(seconds: 2));
 
-      if(ApiClientService.currentUser != null){
+      if(ApiClientService.currentUser?.emailVerified ?? false){
         emit(DashboardState());
       }
       else{

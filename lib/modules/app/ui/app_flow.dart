@@ -40,6 +40,9 @@ class _AppFlowState extends State<AppFlow> {
           else if(state is SignUpState){
             appFlowNavigatorKey.currentState!.pushNamedAndRemoveUntil(ConstRoutes.signUp, (route) => false);
           }
+          else if(state is DashboardState){
+            appFlowNavigatorKey.currentState!.pushNamedAndRemoveUntil(ConstRoutes.dashboard, (route) => false);
+          }
           else if(state is ForgotPasswordState){
             appFlowNavigatorKey.currentState!.pushNamed(ConstRoutes.forgotpassword);
           }

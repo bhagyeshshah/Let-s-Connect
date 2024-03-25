@@ -146,5 +146,10 @@ class AppTheme {
       )
     ),
     scaffoldBackgroundColor: lightThemeBackgroundColor,
+    dialogBackgroundColor: lightThemeBackgroundColor,
+    dialogTheme: DialogTheme(
+      backgroundColor: lightThemeBackgroundColor,
+      surfaceTintColor: lightThemeBackgroundColor
+    )
   );
 }

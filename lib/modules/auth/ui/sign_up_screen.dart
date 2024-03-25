@@ -2,6 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lets_connect/modules/app/bloc/app_flow_bloc.dart';
+import 'package:lets_connect/modules/auth/bloc/sign_up_bloc.dart' as signUpBloc;
+import 'package:lets_connect/utils/base_state.dart';
+import 'package:lets_connect/utils/components/lc_activity_indicator.dart';
+import 'package:lets_connect/utils/components/lc_alert_dialog.dart';
 import 'package:lets_connect/utils/components/lc_button.dart';
 import 'package:lets_connect/utils/components/lc_text.dart';
 import 'package:lets_connect/utils/components/lc_textfield.dart';
@@ -15,7 +19,7 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends BaseState<SignUpScreen> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -25,12 +29,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   ValueNotifier<bool> number = ValueNotifier(false);
   ValueNotifier<bool> upperCaseChar = ValueNotifier(false);
   ValueNotifier<bool> specialChar = ValueNotifier(false);
+  final signUpBloc.SignUpBloc _signUpBloc = signUpBloc.SignUpBloc();
+
 
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _signUpBloc.close();
     super.dispose();
   }
 
@@ -108,7 +115,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _buildPasswordStrengthValidator(){
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black12,
+        color: Colors.grey.shade100,
         borderRadius: BorderRadius.circular(10)
       ),
       margin: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -147,16 +154,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget _buildSignUpButton(){
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: LcButton(
-        title: translationService.text('key_sign_up'),
-        onPressed: () {
-          if(_formKey.currentState!.validate()){
-            FocusScope.of(context).unfocus();
-          }
-        },
-      ),
+    return BlocConsumer(
+      bloc: _signUpBloc,
+      listener: (context, signUpBloc.SignUpState state){
+        if(state is signUpBloc.SignUpError){
+          showErrorMessage(state.error);
+          LcRootActivityIndicator.hideLoader(context);
+        }
+        else if(state is signUpBloc.SignUpSuccess){
+          LcRootActivityIndicator.hideLoader(context);
+          showVerificationDialog();
+        }
+        else if(state is signUpBloc.SignUpLoading){
+          LcRootActivityIndicator.showLoader(context);
+        }
+        
+      },
+      builder: (context, signUpBloc.SignUpState state) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: LcButton(
+            title: translationService.text('key_sign_up'),
+            onPressed: () {
+              if(_formKey.currentState!.validate()){
+                FocusScope.of(context).unfocus();
+                _signUpBloc.add(signUpBloc.SignUpButtonPressed(email: _emailController.text.trim(), password: _passwordController.text));
+              }
+            },
+          ),
+        );
+      }
     );
   }
 
@@ -173,6 +200,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
           },
         )
       ],
+    );
+  }
+
+  showVerificationDialog(){
+    LcAlert.showAlertDialog(
+      context: context, 
+      title: translationService.text('key_verification_required')!,
+      subTitle: translationService.text('key_verification_required_subtitle')!,
+      actions: [
+        LcButton(
+          title: translationService.text('key_ok'),
+          onPressed: (){
+            Navigator.of(context, rootNavigator: true).maybePop();
+            BlocProvider.of<AppFlowBloc>(context).add(SignInEvent());
+          },
+        )
+      ]
     );
   }
 }
