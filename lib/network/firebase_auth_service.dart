@@ -6,7 +6,9 @@ class FirebaseAuthService{
 
   static final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<User> signIn({required String email, required String password}) async{
+  static User? get currentUser => _auth.currentUser;
+
+  static Future<User> signIn({required String email, required String password}) async{
     UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email,password: password);
     if(userCredential.user?.emailVerified ?? false){
       return userCredential.user!;
@@ -18,23 +20,23 @@ class FirebaseAuthService{
     }
   }
 
-  Future<void> signUp({required String email, required String password}) async{
+  static Future<void> signUp({required String email, required String password}) async{
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password
-    );
+    ); 
     await verifyEmail(user: userCredential.user);
   }
 
-  Future<void> verifyEmail({required User? user}) async{
+  static Future<void> verifyEmail({required User? user}) async{
     await user?.sendEmailVerification();
   }
 
-  Future<void> forgotPassword({required String email}) async{
+  static Future<void> forgotPassword({required String email}) async{
     await _auth.sendPasswordResetEmail(email: email);
   }
 
-  Future<void> signOut() async{
+  static Future<void> signOut() async{
     await _auth.signOut();
   }
 

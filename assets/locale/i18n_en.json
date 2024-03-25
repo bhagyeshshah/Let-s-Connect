@@ -1,4 +1,24 @@
 {
-    "key_app_name": "Let's Connect",
-    "key_user_not_verified_error": "Please confirm your registered email address"
+    "key_app_name": "Let's Connect !!",
+    "key_user_not_verified_error": "Please confirm your registered email address",
+    "key_email_required": "Email is required",
+    "key_email_length_validation": "Email cannot be more than 256 characters",
+    "key_please_enter_valid_email": "Please enter a valid email address",
+    "key_password_must_contain": "Password must contain:",
+    "key_atleast_8_character": "Atleast 8 characters",
+    "key_atleast_upper_case_character": "Atleast an upper case character",
+    "key_atleast_number": "Atleast a number",
+    "key_atleast_special_character": "Atleast a special character",
+    "key_eight_character": "8 characters",
+    "key_one_punctuation": "1 punctuation mark or special symbol",
+    "key_one_number": "1 number",
+    "key_one_letter_uppercase": "1 letter in upper case",
+    "key_signin": "Sign In",
+    "key_email": "Email",
+    "key_password": "Password",
+    "key_forgot_password": "Forgot Password?",
+    "key_no_account": "Don't have an account?",
+    "key_sign_up": "Sign Up",
+    "key_submit": "Submit",
+    "key_already_account": "Already have an account?"
 }
