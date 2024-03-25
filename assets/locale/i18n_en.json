@@ -25,5 +25,7 @@
     "key_verification_required": "Verification Required",
     "key_verification_required_subtitle": "Thank you for signing up. We have sent you a verification email. Please verify your email address to continue.",
     "key_ok": "OK",
-    "key_sign_out": "Sign Out"
+    "key_sign_out": "Sign Out",
+    "key_password_reset": "Reset Password",
+    "key_password_reset_subtitle": "We have sent you a mail to help you with a new password."
 }
