@@ -18,6 +18,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool obscureText = true;
+  final _formKey = GlobalKey<FormState>();
+  
 
   @override
   void dispose() {
@@ -38,16 +41,19 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget _buildBody(){
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildTitle(),
-          _buildEmailField(),
-          _buildPasswordField(),
-          _buildForgotPasswordButton(),
-          _buildSignInButton(),
-          _buildSignUpButton()
-        ],
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildTitle(),
+            _buildEmailField(),
+            _buildPasswordField(),
+            _buildForgotPasswordButton(),
+            _buildSignInButton(),
+            _buildSignUpButton()
+          ],
+        ),
       ),
     );
   }
@@ -74,8 +80,17 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget _buildPasswordField(){
     return LcTextField(
       controller: _passwordController,
+      obscureText: obscureText,
       validator: Validator.password,
       labelText: translationService.text('key_password'),
+      suffix: GestureDetector(
+        child: Icon(obscureText ? Icons.visibility : Icons.visibility_off, color: Theme.of(context).primaryColor,),
+        onTap: () {
+          setState(() {
+            obscureText = !obscureText;
+          });
+        },
+      ),
     );
   }
 
@@ -85,6 +100,9 @@ class _SignInScreenState extends State<SignInScreen> {
       child: LcButton(
         title: translationService.text('key_signin'),
         onPressed: () {
+          if(_formKey.currentState!.validate()){
+            FocusScope.of(context).unfocus();
+          }
         },
       ),
     );

@@ -20,5 +20,6 @@
     "key_no_account": "Don't have an account?",
     "key_sign_up": "Sign Up",
     "key_submit": "Submit",
-    "key_already_account": "Already have an account?"
+    "key_already_account": "Already have an account?",
+    "key_password_required": "Password is required"
 }

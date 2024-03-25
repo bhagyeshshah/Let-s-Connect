@@ -101,7 +101,7 @@ class AppTheme {
         errorMaxLines: 2,
         alignLabelWithHint: true,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
-        errorStyle: TextStyle(color: lightThemeErrorColor, fontSize: 16, height: 0.3),
+        errorStyle: TextStyle(color: lightThemeErrorColor, fontSize: 16, height: 0.3, fontWeight: FontWeight.w500),
         labelStyle: TextStyle(color: lightThemeTextFieldColor),
         floatingLabelStyle: TextStyle(color: lightThemePrimaryColor, fontSize: 18),
         focusedBorder: OutlineInputBorder(
@@ -109,6 +109,13 @@ class AppTheme {
           borderSide: BorderSide(
             color: lightThemePrimaryColor,
             width: 1.5
+          )
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(
+            color: lightThemePrimaryColor,
+            width: 0.5
           )
         ),
         errorBorder: OutlineInputBorder(
