@@ -8,6 +8,8 @@ class LcTextField extends StatefulWidget {
   EdgeInsets? margin;
   Widget? suffix;
   void Function(String)? onChanged;
+  bool enabled;
+
   LcTextField({
     super.key,
     this.controller,
@@ -15,7 +17,8 @@ class LcTextField extends StatefulWidget {
     this.validator,
     this.labelText,
     this.suffix,
-    this.onChanged
+    this.onChanged,
+    this.enabled = true,
   });
 
   @override
@@ -31,6 +34,7 @@ class _LcTextFieldState extends State<LcTextField> {
         controller: widget.controller,
         obscureText: widget.obscureText,
         validator: widget.validator,
+        enabled: widget.enabled,
         onChanged: widget.onChanged,
         decoration: InputDecoration(
           labelText: widget.labelText,

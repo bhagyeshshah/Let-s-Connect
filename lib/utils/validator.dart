@@ -47,4 +47,15 @@ class Validator{
     }
     return null;
   }
+
+  static String? lengthLimitter(String? value, {int limit = 100, String? label, bool isRequired=false}) {
+    if (isRequired && (value?.trim().isEmpty ?? true)) {
+      return "$label ${translationService.text("key_is_required_lowercase")}";
+
+    }
+    if ((value?.length ?? 0) > limit) {
+      return "$label ${translationService.text("key_cannot_morethan")!} $limit ${translationService.text("key_character_long")!}";
+    }
+    return null;
+  }
 }

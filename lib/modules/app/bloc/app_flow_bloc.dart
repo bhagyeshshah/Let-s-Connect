@@ -11,7 +11,6 @@ class AppStart extends AppFlowEvent{}
 class SignInEvent extends AppFlowEvent{}
 class SignUpEvent extends AppFlowEvent{}
 class ForgotPasswordEvent extends AppFlowEvent{}
-class ProfileEvent extends AppFlowEvent{}
 class DashboardEvent extends AppFlowEvent{}
 class SignOutEvent extends AppFlowEvent{}
 
@@ -36,7 +35,6 @@ class AppFlowBloc extends Bloc<AppFlowEvent, AppFlowState>{
     on<SignInEvent>(_mapSignInToState);
     on<SignUpEvent>(_mapSignUpToState);
     on<ForgotPasswordEvent>(_mapForgotPasswordToState);
-    on<ProfileEvent>(_mapProfileToState);
     on<DashboardEvent>(_mapDashboardToState);
     on<SignOutEvent>(_mapSignOutToState);
   }
@@ -79,9 +77,6 @@ class AppFlowBloc extends Bloc<AppFlowEvent, AppFlowState>{
   }
   FutureOr _mapForgotPasswordToState(ForgotPasswordEvent event, Emitter<AppFlowState> emit) async {
     emit(ForgotPasswordState());
-  }
-  FutureOr _mapProfileToState(ProfileEvent event, Emitter<AppFlowState> emit) async {
-    emit(ProfileState());
   }
   FutureOr _mapDashboardToState(DashboardEvent event, Emitter<AppFlowState> emit) async {
     try{

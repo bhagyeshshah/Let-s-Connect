@@ -32,5 +32,10 @@
     "key_are_you_sure": "Are you sure?",
     "key_signout_title": "You will sign out from this app.",
     "key_yes": "Yes",
-    "key_no": "No"
+    "key_no": "No",
+    "key_is_required_lowercase": "is required",
+    "key_character_long": "characters",
+    "key_username": "Username",
+    "key_status": "Status",
+    "key_save": "Save"
 }
