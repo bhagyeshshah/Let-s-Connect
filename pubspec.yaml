@@ -39,6 +39,8 @@ dependencies:
   firebase_analytics: 10.8.9
   firebase_remote_config: 4.3.17
   firebase_auth: 4.17.7
+  firebase_storage: 11.6.9
+  firebase_database: 10.4.9
 
   # State Management
   flutter_bloc: 8.1.3

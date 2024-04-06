@@ -1,10 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lets_connect/modules/user_profile/model/user_profile_dm.dart';
 import 'package:lets_connect/network/firebase_auth_service.dart';
+import 'package:lets_connect/network/user_profile_api.dart';
 import 'package:lets_connect/utils/api_exception.dart';
 
 class ApiClientService{
 
   static User? get currentUser => FirebaseAuthService.currentUser;
+
+  //AUTHENTICATION
 
   static Future<User> signIn({required String email, required String password}) async{
     return await _handleApiException(FirebaseAuthService.signIn(email: email, password: password));
@@ -19,6 +23,16 @@ class ApiClientService{
   }
   static Future<void> signOut() async{
     return await _handleApiException(FirebaseAuthService.signOut());
+  }
+
+  //USER
+
+  static Future saveProfile({required UserProfileDm userProfileDm}) async{
+    return await _handleApiException(UserProfileApi.saveProfile(userProfileDm: userProfileDm));
+  }
+
+  static Future<UserProfileDm?> fetchProfile({required String userId}) async{
+    return await _handleApiException(UserProfileApi.fetchProfile(userId: userId));
   }
 
 

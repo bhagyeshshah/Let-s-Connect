@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lets_connect/modules/user_profile/model/user_profile_dm.dart';
 import 'package:lets_connect/utils/api_client_service.dart';
+import 'package:lets_connect/utils/app_storage_singleton.dart';
 
 abstract class AppFlowEvent{}
 class AppStart extends AppFlowEvent{}
@@ -21,6 +24,12 @@ class ForgotPasswordState extends AppFlowState{}
 class ProfileState extends AppFlowState{}
 class DashboardState extends AppFlowState{}
 
+class LoadingState extends AppFlowState{}
+class ErrorState extends AppFlowState{
+  String error;
+  ErrorState(this.error);
+}
+
 class AppFlowBloc extends Bloc<AppFlowEvent, AppFlowState>{
   AppFlowBloc():super(SplashState()){
     on<AppStart>(_mapAppStartToState);
@@ -39,9 +48,21 @@ class AppFlowBloc extends Bloc<AppFlowEvent, AppFlowState>{
 
       //Showing splash screen
       await Future.delayed(const Duration(seconds: 2));
-
+      
       if(ApiClientService.currentUser?.emailVerified ?? false){
-        emit(DashboardState());
+        try{
+          UserProfileDm? user = await ApiClientService.fetchProfile(userId: ApiClientService.currentUser?.uid ?? '');
+          if(user != null){
+            appStorageSingleton.loggedInUser = user;
+            emit(DashboardState());
+          }
+          else{
+            emit(ProfileState());
+          }
+        }
+        catch(e){
+          emit(SignInState());
+        }
       }
       else{
         emit(SignInState());
@@ -63,10 +84,25 @@ class AppFlowBloc extends Bloc<AppFlowEvent, AppFlowState>{
     emit(ProfileState());
   }
   FutureOr _mapDashboardToState(DashboardEvent event, Emitter<AppFlowState> emit) async {
-    emit(DashboardState());
+    try{
+      emit(LoadingState());
+      UserProfileDm? user = await ApiClientService.fetchProfile(userId: ApiClientService.currentUser?.uid ?? '');
+      if(user != null){
+        appStorageSingleton.loggedInUser = user;
+        emit(DashboardState());
+      }
+      else{
+        emit(ProfileState());
+      }
+    }on FirebaseException catch(e ){
+      emit(ErrorState(e.message.toString()));
+    }
+    catch(e){
+      emit(ErrorState(e.toString()));
+    }
   }
   FutureOr _mapSignOutToState(SignOutEvent event, Emitter<AppFlowState> emit) async {
-    await ApiClientService.signOut();
+    appStorageSingleton.reset();
     emit(SignInState());
   }
 }

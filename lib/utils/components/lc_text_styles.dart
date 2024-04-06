@@ -8,5 +8,8 @@ class LcTextStyle{
   static TextStyle? chatMessageSent(){
     return currentTheme.textTheme.bodySmall;
   }
+  static TextStyle? appBar(){
+    return currentTheme.textTheme.headlineMedium;
+  }
 
 }

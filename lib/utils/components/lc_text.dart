@@ -19,6 +19,9 @@ class LcText extends StatelessWidget {
   LcText.pageHeader({super.key, required this.text, this.style, this.textAlign}){
     _type = LcTextType.pageHeader;
   }
+  LcText.appBar({super.key, required this.text, this.style, this.textAlign}){
+    _type = LcTextType.appBar;
+  }
   LcText.chatMessageSent({super.key, required this.text, this.style, this.textAlign}){
     _type = LcTextType.chatMessageSent;
   }
@@ -34,6 +37,8 @@ class LcText extends StatelessWidget {
         return LcTextStyle.pageHeaderStyle();
       case LcTextType.chatMessageSent:
         return LcTextStyle.chatMessageSent();
+      case LcTextType.appBar:
+        return LcTextStyle.appBar();
       default: return null;
     }
   }

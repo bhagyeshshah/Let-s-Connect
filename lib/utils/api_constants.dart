@@ -1,20 +1,23 @@
 class ApiConstants{
 
+  //Database
+  static const String databaseUrl = 'https://lets-connect-7a023-default-rtdb.asia-southeast1.firebasedatabase.app/';
+
   //Header key constants
   static const String headerAuthorization = 'Authorization';
   static const String headerContentType = 'Content-Type';
 
   /*Developemnt Environment*/
-  static String devBaseAPI = 'dev/';
+  static String devBaseAPI = 'database/dev/';
  
   /*UAT Environment*/
-  static String uatBaseAPI = 'uat/';
+  static String uatBaseAPI = 'database/uat/';
   
   /*QA Environment*/
-  static String qaBaseAPI = 'uat/';
+  static String qaBaseAPI = 'database/qa/';
 
   /*Production Environment*/
-  static String prodBaseAPI = 'prod/';
+  static String prodBaseAPI = 'database/prod/';
   
   static late final String baseAPI;
 
@@ -35,6 +38,8 @@ class ApiConstants{
   ///////////////////////////////////////////////////////////////////////////////
 
   //Endpoints
+
+  static const String users = 'users';
 
 
 }

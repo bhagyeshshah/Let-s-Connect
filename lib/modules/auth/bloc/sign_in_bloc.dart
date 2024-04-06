@@ -21,10 +21,13 @@ class SignInButtonPressed extends SignInEvent{
   SignInButtonPressed({required this.email, required this.password});
 }
 
+class SignOutButtonPressed extends SignInEvent{}
+
 
 class SignInBloc extends Bloc<SignInEvent, SignInState>{
   SignInBloc():super(SignInInitial()){
     on<SignInButtonPressed>(_mapSignInButtonPressedToState);    
+    on<SignOutButtonPressed>(_mapSignOutButtonPressedToState);    
   }
 
   FutureOr _mapSignInButtonPressedToState(SignInButtonPressed event, Emitter<SignInState> emit) async{
@@ -33,6 +36,22 @@ class SignInBloc extends Bloc<SignInEvent, SignInState>{
     
       //API Call
       await ApiClientService.signIn(email: event.email, password: event.password);
+
+      emit(SignInSuccess());
+    }
+    on FirebaseException catch(e ){
+      emit(SignInError(e.message.toString()));
+    }
+    catch(e){
+      emit(SignInError(e.toString()));
+    }
+  }
+  FutureOr _mapSignOutButtonPressedToState(SignOutButtonPressed event, Emitter<SignInState> emit) async{
+    try{
+      emit(SignInLoading());
+    
+      //API Call
+      await ApiClientService.signOut();
 
       emit(SignInSuccess());
     }

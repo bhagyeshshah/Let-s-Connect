@@ -11,6 +11,7 @@ class AppTheme {
   static Color lightThemeErrorColor = Colors.red;
   static Color lightThemeTextFieldColor = Colors.black;
   static Color lightThemeTextfieldBackgroundColor = Colors.grey.shade200;
+  static Color lightThemeTextfColor = Colors.black;
 
 
   static ThemeData lightTheme = ThemeData(
@@ -139,11 +140,16 @@ class AppTheme {
         fontWeight: FontWeight.bold,
         color: lightThemePrimaryColor
       ),
+      headlineMedium: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: lightThemeTextfColor,
+        fontSize: 32
+      ),
       bodySmall: TextStyle(
         fontWeight: FontWeight.bold,
         color: lightThemeButtonTextColor,
         fontSize: 18
-      )
+      ),
     ),
     scaffoldBackgroundColor: lightThemeBackgroundColor,
     dialogBackgroundColor: lightThemeBackgroundColor,

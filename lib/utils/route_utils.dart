@@ -4,6 +4,7 @@ import 'package:lets_connect/modules/auth/ui/forgot_password_screen.dart';
 import 'package:lets_connect/modules/auth/ui/sign_in_screen.dart';
 import 'package:lets_connect/modules/auth/ui/sign_up_screen.dart';
 import 'package:lets_connect/modules/dashboard/ui/dashboard_screen.dart';
+import 'package:lets_connect/modules/user_profile/ui/user_profile_screen.dart';
 
 class ConstRoutes {
 
@@ -13,6 +14,7 @@ class ConstRoutes {
   static const String signUp = '/signUp';
   static const String forgotpassword = '/forgotPassword';
   static const String dashboard = '/dashboard';
+  static const String userProfile = '/userProfile';
 
   
   //APP
@@ -30,6 +32,8 @@ class ConstRoutes {
         return _createRoute(screen: const ForgotPasswordScreen());
       case ConstRoutes.dashboard:
         return _createRoute(screen: const DashboardScreen());
+      case ConstRoutes.userProfile:
+        return _createRoute(screen: UserProfileScreen(userId: settings.arguments as String?,));
       
       default:
         return MaterialPageRoute(builder: (context) =>  Container());

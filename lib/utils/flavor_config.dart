@@ -1,5 +1,8 @@
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:lets_connect/utils/api_constants.dart';
+import 'package:lets_connect/utils/lc_firebase_utils.dart';
 
 enum Flavor{
   dev,
@@ -30,6 +33,9 @@ class FlavorConfig{
 
   set values(FlavorValues values){
     ApiConstants.baseAPI = values.baseUrl;
+      final firebaseApp = Firebase.app();
+      LcFirebaseUtils.firebaseDatabase = FirebaseDatabase.instanceFor(app: firebaseApp, databaseURL: ApiConstants.databaseUrl);
+
   }
 
   static FlavorConfig? get instance{

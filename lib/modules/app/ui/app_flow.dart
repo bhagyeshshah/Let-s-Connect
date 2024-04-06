@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lets_connect/modules/app/bloc/app_flow_bloc.dart';
 import 'package:lets_connect/utils/app_storage_singleton.dart';
+import 'package:lets_connect/utils/base_state.dart';
+import 'package:lets_connect/utils/components/lc_activity_indicator.dart';
 import 'package:lets_connect/utils/route_utils.dart';
 
 class AppFlow extends StatefulWidget {
@@ -13,7 +15,7 @@ class AppFlow extends StatefulWidget {
   State<AppFlow> createState() => _AppFlowState();
 }
 
-class _AppFlowState extends State<AppFlow> {
+class _AppFlowState extends BaseState<AppFlow> {
 
   late AppFlowBloc appBloc;
 
@@ -41,10 +43,22 @@ class _AppFlowState extends State<AppFlow> {
             appFlowNavigatorKey.currentState!.pushNamedAndRemoveUntil(ConstRoutes.signUp, (route) => false);
           }
           else if(state is DashboardState){
+            LcRootActivityIndicator.hideLoader(context);
             appFlowNavigatorKey.currentState!.pushNamedAndRemoveUntil(ConstRoutes.dashboard, (route) => false);
+          }
+          else if(state is ProfileState){
+            LcRootActivityIndicator.hideLoader(context);
+            appFlowNavigatorKey.currentState!.pushNamedAndRemoveUntil(ConstRoutes.userProfile, (route) => false);
           }
           else if(state is ForgotPasswordState){
             appFlowNavigatorKey.currentState!.pushNamed(ConstRoutes.forgotpassword);
+          }
+          else if(state is ErrorState){
+            LcRootActivityIndicator.hideLoader(context);
+            showErrorMessage(state.error);
+          }
+          else if(state is LoadingState){
+            LcRootActivityIndicator.showLoader(context);
           }
           
         },
