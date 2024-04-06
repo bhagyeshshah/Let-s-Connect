@@ -42,5 +42,8 @@
     "key_settings": "Settings",
     "key_camera": "Camera",
     "key_gallery": "Gallery",
-    "key_cancel": "Cancel"
+    "key_cancel": "Cancel",
+    "key_home": "Home",
+    "key_chats": "Chats",
+    "key_more": "More"
 }

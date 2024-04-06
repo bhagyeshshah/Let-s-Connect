@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lets_connect/modules/user_profile/model/user_profile_dm.dart';
 import 'package:lets_connect/utils/api_client_service.dart';
+import 'package:lets_connect/utils/app_storage_singleton.dart';
 
 
 abstract class ProfileState{}
@@ -59,6 +60,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState>{
       emit(ProfileLSaving());
       //Api Call
       await ApiClientService.saveProfile(userProfileDm: event.userProfileDm);
+      appStorageSingleton.loggedInUser = event.userProfileDm;
       emit(ProfileLSaved());
     }
     catch(e){

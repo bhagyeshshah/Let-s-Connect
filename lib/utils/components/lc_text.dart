@@ -5,6 +5,8 @@ enum LcTextType{
   pageHeader,
   appBar,
   chatMessageSent,
+  title,
+  subTitle,
   free
 }
 
@@ -25,6 +27,12 @@ class LcText extends StatelessWidget {
   LcText.chatMessageSent({super.key, required this.text, this.style, this.textAlign}){
     _type = LcTextType.chatMessageSent;
   }
+  LcText.title({super.key, required this.text, this.style, this.textAlign}){
+    _type = LcTextType.title;
+  }
+  LcText.subTitle({super.key, required this.text, this.style, this.textAlign}){
+    _type = LcTextType.subTitle;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +47,10 @@ class LcText extends StatelessWidget {
         return LcTextStyle.chatMessageSent();
       case LcTextType.appBar:
         return LcTextStyle.appBar();
+      case LcTextType.title:
+        return LcTextStyle.title();
+      case LcTextType.subTitle:
+        return LcTextStyle.subTitle();
       default: return null;
     }
   }

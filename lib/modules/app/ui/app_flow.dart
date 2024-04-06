@@ -94,15 +94,15 @@ class _AppFlowState extends BaseState<AppFlow> {
   }
 
   Future<bool> popCondition(AppFlowState state)async{
-    if(state is DashboardState){
-      bool? val = await appStorageSingleton.dashboardNavigatorKey.currentState?.maybePop();
-      //Fixing to minimize the app from home page.
-      // If we don't need this, then simply comment out the below if-condition.
-      if(val == false){
-        return true;
-      }
-      return false;
-    }
+    // if(state is DashboardState){
+    //   bool? val = await appStorageSingleton.dashboardNavigatorKey.currentState?.maybePop();
+    //   //Fixing to minimize the app from home page.
+    //   // If we don't need this, then simply comment out the below if-condition.
+    //   if(val == false){
+    //     return true;
+    //   }
+    //   return false;
+    // }
     return false;
   }
 

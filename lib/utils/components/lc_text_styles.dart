@@ -11,5 +11,11 @@ class LcTextStyle{
   static TextStyle? appBar(){
     return currentTheme.textTheme.headlineMedium;
   }
+  static TextStyle? title(){
+    return currentTheme.textTheme.titleMedium;
+  }
+  static TextStyle? subTitle(){
+    return currentTheme.textTheme.titleSmall;
+  }
 
 }

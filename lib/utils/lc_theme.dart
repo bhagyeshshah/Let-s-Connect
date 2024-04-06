@@ -150,6 +150,16 @@ class AppTheme {
         color: lightThemeButtonTextColor,
         fontSize: 18
       ),
+      titleMedium: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: lightThemeTextfColor,
+        fontSize: 18
+      ),
+      titleSmall: TextStyle(
+        fontWeight: FontWeight.normal,
+        color: lightThemeTextfColor,
+        fontSize: 14
+      ),
     ),
     scaffoldBackgroundColor: lightThemeBackgroundColor,
     dialogBackgroundColor: lightThemeBackgroundColor,

@@ -77,9 +77,9 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
           children: [
             LcAppBar(
               title: translationService.text('key_user_profile'),
@@ -94,8 +94,8 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
               child: _buildBody(),
             )
           ],
-        )
-      ),
+        ),
+      )
     );
   }
 
@@ -116,7 +116,9 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
         else if(state is ProfileLSaved){
           showSuccessMessage(translationService.text('key_profile_saved')!);
           LcRootActivityIndicator.hideLoader(context);
-          BlocProvider.of<AppFlowBloc>(context).add(DashboardEvent());
+          if(widget.userId == null){
+            BlocProvider.of<AppFlowBloc>(context).add(DashboardEvent());
+          }
         }
         
       },
@@ -160,10 +162,14 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
             return ValueListenableBuilder(
               valueListenable: profileTextWidget,
               builder: (context, value, child) {
-                return CircleAvatar(
-                  radius: MediaQuery.of(context).size.shortestSide/4,
-                  backgroundImage: profileImageWidget.value,
-                  child: profileImageWidget.value == null ? profileTextWidget.value : null,
+                return Hero(
+                  tag: 'profile',
+                  transitionOnUserGestures: true,
+                  child: CircleAvatar(
+                    radius: MediaQuery.of(context).size.shortestSide/4,
+                    backgroundImage: profileImageWidget.value,
+                    child: profileImageWidget.value == null ? profileTextWidget.value : null,
+                  ),
                 );
               }
             );
