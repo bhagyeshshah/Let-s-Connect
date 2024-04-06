@@ -24,6 +24,14 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>We would like to access Camera to click incident images.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We would like to access Microphone to record video of incidents.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We would like to access Photos to select incident images.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:lets_connect/utils/data_model.dart';
 
 class UserProfileDm extends DataModel{
@@ -9,6 +11,9 @@ class UserProfileDm extends DataModel{
   bool? isActive;
   String? lastUpdatedAt;
 
+  //For UI Purpose Only
+  File? profileImageFile;
+  
   UserProfileDm(
     {
       this.userId,
@@ -17,7 +22,8 @@ class UserProfileDm extends DataModel{
       this.profilePicUrl,
       this.status,
       this.isActive,
-      this.lastUpdatedAt
+      this.lastUpdatedAt,
+      this.profileImageFile
     }
   );
 

@@ -1,6 +1,7 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:lets_connect/utils/api_constants.dart';
 import 'package:lets_connect/utils/lc_firebase_utils.dart';
 
@@ -35,6 +36,7 @@ class FlavorConfig{
     ApiConstants.baseAPI = values.baseUrl;
       final firebaseApp = Firebase.app();
       LcFirebaseUtils.firebaseDatabase = FirebaseDatabase.instanceFor(app: firebaseApp, databaseURL: ApiConstants.databaseUrl);
+      LcFirebaseUtils.firebaseStorage = FirebaseStorage.instanceFor(app: firebaseApp, bucket: ApiConstants.bucketUrl);
 
   }
 

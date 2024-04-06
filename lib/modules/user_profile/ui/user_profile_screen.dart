@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:lets_connect/modules/user_profile/bloc/user_profile_bloc.dart';
 import 'package:lets_connect/modules/user_profile/model/user_profile_dm.dart';
 import 'package:lets_connect/utils/api_client_service.dart';
 import 'package:lets_connect/utils/base_state.dart';
+import 'package:lets_connect/utils/components/file/file_picker.dart';
 import 'package:lets_connect/utils/components/lc_activity_indicator.dart';
 import 'package:lets_connect/utils/components/lc_app_bar.dart';
 import 'package:lets_connect/utils/components/lc_button.dart';
@@ -35,7 +37,10 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
   ProfileBloc profileBloc = ProfileBloc();
   final _formKey = GlobalKey<FormState>();
 
-  ValueNotifier<Widget> profileWidget = ValueNotifier(Container());
+  ValueNotifier<Widget> profileTextWidget = ValueNotifier(Container());
+  ValueNotifier<ImageProvider?> profileImageWidget = ValueNotifier(null);
+
+  File? profileImageFile;
 
   @override
   void initState() {
@@ -44,7 +49,7 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
     }
     else{
       _emailController.text = ApiClientService.currentUser?.email ?? '';
-      setUpProfileWidget();
+      setUpProfileTextWidget();
     }
     super.initState();
   }
@@ -63,7 +68,11 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
     _emailController.text = profileDm?.email ?? '';
     _userNameController.text = profileDm?.userName ?? '';
     _statusController.text = profileDm?.status ?? '';
-    setUpProfileWidget();
+    if(userProfileDm?.profilePicUrl == null){
+      setUpProfileTextWidget();
+    }else{
+      setUpProfileImageWidget();
+    }
   }
 
   @override
@@ -146,11 +155,17 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
       alignment: Alignment.center,
       children: [
         ValueListenableBuilder(
-          valueListenable: profileWidget,
-          builder: (context, value, child) {
-            return CircleAvatar(
-              radius: MediaQuery.of(context).size.shortestSide/4,
-              child: profileWidget.value,
+          valueListenable: profileImageWidget,
+              builder: (context, value, child) {
+            return ValueListenableBuilder(
+              valueListenable: profileTextWidget,
+              builder: (context, value, child) {
+                return CircleAvatar(
+                  radius: MediaQuery.of(context).size.shortestSide/4,
+                  backgroundImage: profileImageWidget.value,
+                  child: profileImageWidget.value == null ? profileTextWidget.value : null,
+                );
+              }
             );
           }
         ),
@@ -159,7 +174,10 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
           right:(radius) - (radius/(sqrt(2))) - 25,
           child: FloatingActionButton(
             backgroundColor: Theme.of(context).primaryColor,
-            onPressed: (){},
+            onPressed: () async{
+              profileImageFile = await LcImagePicker.pickUpImageFile(context, widget.userId ?? ApiClientService.currentUser?.uid);
+              setUpProfileImageWidget();
+            },
             mini: true,
             child: const Icon(Icons.photo_camera, color: Colors.white, size: 25),
           )
@@ -176,7 +194,7 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
       labelText: translationService.text('key_email'),
       onChanged: (val){
         if(userProfileDm?.profilePicUrl?.isEmpty ?? true){
-          setUpProfileWidget();
+          setUpProfileTextWidget();
         }
       },
     );
@@ -191,7 +209,7 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
       labelText: translationService.text('key_username'),
       onChanged: (val){
         if(userProfileDm?.profilePicUrl?.isEmpty ?? true){
-          setUpProfileWidget();
+          setUpProfileTextWidget();
         }
       },
     );
@@ -218,21 +236,27 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
           userProfileDm?.email = _emailController.text;
           userProfileDm?.userName = _userNameController.text;
           userProfileDm?.status = _statusController.text;
+          userProfileDm?.profileImageFile = profileImageFile;
           profileBloc.add(SaveProfile(userProfileDm: userProfileDm));
         }
       },
     );
   }
 
-  void setUpProfileWidget(){
-    if(userProfileDm?.profilePicUrl != null){
-
+  void setUpProfileImageWidget(){
+    if(profileImageFile != null){
+      profileImageWidget.value = FileImage(profileImageFile!);
     }
-    else if(_userNameController.text.isNotNullAndNotEmpty()){
-      profileWidget.value = LcText.pageHeader(text: _userNameController.text.characters.first.toUpperCase(), style: LcTextStyle.pageHeaderStyle()?.copyWith(fontSize: 96),);
+    else if(userProfileDm?.profilePicUrl != null){
+      profileImageWidget.value = NetworkImage(userProfileDm!.profilePicUrl!);
+    }
+  }
+  void setUpProfileTextWidget(){
+    if(_userNameController.text.isNotNullAndNotEmpty()){
+      profileTextWidget.value = LcText.pageHeader(text: _userNameController.text.characters.first.toUpperCase(), style: LcTextStyle.pageHeaderStyle()?.copyWith(fontSize: 96),);
     }
     else if(_emailController.text.isNotNullAndNotEmpty()){
-      profileWidget.value = LcText.pageHeader(text: _emailController.text.characters.first.toUpperCase(), style: LcTextStyle.pageHeaderStyle()?.copyWith(fontSize: 96),);
+      profileTextWidget.value = LcText.pageHeader(text: _emailController.text.characters.first.toUpperCase(), style: LcTextStyle.pageHeaderStyle()?.copyWith(fontSize: 96),);
     }
   }
 }

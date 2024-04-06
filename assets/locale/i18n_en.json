@@ -38,5 +38,9 @@
     "key_username": "Username",
     "key_status": "Status",
     "key_save": "Save",
-    "key_profile_saved": "Profile Saved Successfully!"
+    "key_profile_saved": "Profile Saved Successfully!",
+    "key_settings": "Settings",
+    "key_camera": "Camera",
+    "key_gallery": "Gallery",
+    "key_cancel": "Cancel"
 }

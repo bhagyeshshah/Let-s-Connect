@@ -8,6 +8,10 @@ class UserProfileApi{
     if(userProfileDm == null){
       return;
     }
+    if(userProfileDm.profileImageFile != null){
+      userProfileDm.profilePicUrl = await  LcFirebaseUtils.uploadFile(userProfileDm.profileImageFile!, endPoint: ApiConstants.users, value: userProfileDm.userId);
+ 
+    }
     await  LcFirebaseUtils.post(endPoint: ApiConstants.users, value: userProfileDm.userId, body: userProfileDm);
   }
   

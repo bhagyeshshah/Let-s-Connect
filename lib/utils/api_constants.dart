@@ -2,6 +2,7 @@ class ApiConstants{
 
   //Database
   static const String databaseUrl = 'https://lets-connect-7a023-default-rtdb.asia-southeast1.firebasedatabase.app/';
+  static const String bucketUrl = 'gs://lets-connect-7a023.appspot.com';
 
   //Header key constants
   static const String headerAuthorization = 'Authorization';
