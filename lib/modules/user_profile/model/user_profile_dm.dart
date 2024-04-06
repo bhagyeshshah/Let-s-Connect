@@ -7,7 +7,7 @@ class UserProfileDm extends DataModel{
   String? profilePicUrl;
   String? status;
   bool? isActive;
-  num? lastUpdatedAt;
+  String? lastUpdatedAt;
 
   UserProfileDm(
     {
@@ -39,8 +39,8 @@ class UserProfileDm extends DataModel{
     data['email'] = email;
     data['profilePicUrl'] = profilePicUrl;
     data['status'] = status;
-    data['isActive'] = isActive;
-    data['lastUpdatedAt'] = DateTime.now().toUtc();
+    data['isActive'] = isActive ?? true;
+    data['lastUpdatedAt'] = DateTime.now().toUtc().toString();
     return data;
   }
 }

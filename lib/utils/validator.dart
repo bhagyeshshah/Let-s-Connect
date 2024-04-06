@@ -59,3 +59,9 @@ class Validator{
     return null;
   }
 }
+
+extension StringExtensions on String?{
+    bool isNotNullAndNotEmpty() {
+      return this?.trim().isNotEmpty ?? false;
+    }
+  }

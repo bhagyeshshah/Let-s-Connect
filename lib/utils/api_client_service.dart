@@ -27,7 +27,7 @@ class ApiClientService{
 
   //USER
 
-  static Future saveProfile({required UserProfileDm userProfileDm}) async{
+  static Future saveProfile({required UserProfileDm? userProfileDm}) async{
     return await _handleApiException(UserProfileApi.saveProfile(userProfileDm: userProfileDm));
   }
 

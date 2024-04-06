@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:lets_connect/utils/api_constants.dart';
 import 'package:lets_connect/utils/data_model.dart';
@@ -15,7 +17,7 @@ class LcFirebaseUtils{
     DatabaseReference db = firebaseDatabase.ref(url);
     DataSnapshot snapshot = await db.get();
     if(snapshot.exists && snapshot.value != null){
-      return fromJson(snapshot.value as Map<String, dynamic>);
+      return fromJson(json.decode(json.encode(snapshot.value)) as Map<String, dynamic>);
     }
     return null;
   }

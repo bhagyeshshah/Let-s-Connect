@@ -8,6 +8,8 @@ import 'package:lets_connect/utils/api_client_service.dart';
 abstract class ProfileState{}
 class ProfileInitial extends ProfileState{}
 class ProfileLoading extends ProfileState{}
+class ProfileLSaving extends ProfileState{}
+class ProfileLSaved extends ProfileState{}
 class ProfileLoaded extends ProfileState{
   UserProfileDm? profileDm;
   ProfileLoaded(this.profileDm);
@@ -26,14 +28,15 @@ class FetchProfile extends ProfileEvent{
   FetchProfile({required this.userId, this.isRefresh = false});
 }
 
-class UserDetails extends ProfileEvent{
-  String? id;
-  UserDetails({required this.id});
+class SaveProfile extends ProfileEvent{
+  UserProfileDm? userProfileDm;
+  SaveProfile({required this.userProfileDm});
 }
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState>{
   ProfileBloc():super(ProfileInitial()){
     on<FetchProfile>(mapFetchProfileToState);
+    on<SaveProfile>(mapSaveProfileToState);
   }
 
 
@@ -46,6 +49,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState>{
       UserProfileDm? result = await ApiClientService.fetchProfile(userId: event.userId ?? '');
       emit(ProfileLoaded(result));
 
+    }
+    catch(e){
+      emit(ProfileError(e.toString()));
+    }
+  }
+  FutureOr mapSaveProfileToState(SaveProfile event, Emitter<ProfileState> emit) async{
+    try{
+      emit(ProfileLSaving());
+      //Api Call
+      await ApiClientService.saveProfile(userProfileDm: event.userProfileDm);
+      emit(ProfileLSaved());
     }
     catch(e){
       emit(ProfileError(e.toString()));

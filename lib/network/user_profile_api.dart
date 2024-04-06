@@ -4,8 +4,11 @@ import 'package:lets_connect/utils/lc_firebase_utils.dart';
 
 class UserProfileApi{
   
-  static Future saveProfile({required UserProfileDm userProfileDm}) async{
-   await  LcFirebaseUtils.post(endPoint: ApiConstants.users, value: userProfileDm.userId, body: userProfileDm);
+  static Future saveProfile({required UserProfileDm? userProfileDm}) async{
+    if(userProfileDm == null){
+      return;
+    }
+    await  LcFirebaseUtils.post(endPoint: ApiConstants.users, value: userProfileDm.userId, body: userProfileDm);
   }
   
   static Future<UserProfileDm?> fetchProfile({required String userId}) async{

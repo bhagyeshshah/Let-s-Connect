@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lets_connect/modules/app/bloc/app_flow_bloc.dart';
 import 'package:lets_connect/modules/auth/ui/sign_out_button.dart';
 import 'package:lets_connect/modules/user_profile/bloc/user_profile_bloc.dart';
 import 'package:lets_connect/modules/user_profile/model/user_profile_dm.dart';
@@ -10,6 +11,8 @@ import 'package:lets_connect/utils/base_state.dart';
 import 'package:lets_connect/utils/components/lc_activity_indicator.dart';
 import 'package:lets_connect/utils/components/lc_app_bar.dart';
 import 'package:lets_connect/utils/components/lc_button.dart';
+import 'package:lets_connect/utils/components/lc_text.dart';
+import 'package:lets_connect/utils/components/lc_text_styles.dart';
 import 'package:lets_connect/utils/components/lc_textfield.dart';
 import 'package:lets_connect/utils/translation_service.dart';
 import 'package:lets_connect/utils/validator.dart';
@@ -32,6 +35,8 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
   ProfileBloc profileBloc = ProfileBloc();
   final _formKey = GlobalKey<FormState>();
 
+  ValueNotifier<Widget> profileWidget = ValueNotifier(Container());
+
   @override
   void initState() {
     if(widget.userId != null){
@@ -39,6 +44,7 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
     }
     else{
       _emailController.text = ApiClientService.currentUser?.email ?? '';
+      setUpProfileWidget();
     }
     super.initState();
   }
@@ -48,14 +54,16 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
     _emailController.dispose();
     _userNameController.dispose();
     _statusController.dispose();
+    profileBloc.close();
     super.dispose();
   }
 
   void _initializeProfileFields(UserProfileDm? profileDm){
-    userProfileDm = profileDm;
+    userProfileDm = profileDm ?? UserProfileDm();
     _emailController.text = profileDm?.email ?? '';
     _userNameController.text = profileDm?.userName ?? '';
     _statusController.text = profileDm?.status ?? '';
+    setUpProfileWidget();
   }
 
   @override
@@ -87,10 +95,19 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
       bloc: profileBloc,
       listener: (context, state){
         if(state is ProfileError){
+          LcRootActivityIndicator.hideLoader(context);
           showErrorMessage(state.error);
         }
         else if(state is ProfileLoaded){
           _initializeProfileFields(state.profileDm);
+        }
+        else if(state is ProfileLSaving){
+          LcRootActivityIndicator.showLoader(context);
+        }
+        else if(state is ProfileLSaved){
+          showSuccessMessage(translationService.text('key_profile_saved')!);
+          LcRootActivityIndicator.hideLoader(context);
+          BlocProvider.of<AppFlowBloc>(context).add(DashboardEvent());
         }
         
       },
@@ -128,20 +145,23 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
     return Stack(
       alignment: Alignment.center,
       children: [
-        CircleAvatar(
-          radius: MediaQuery.of(context).size.shortestSide/4,
-          child: Container(),
+        ValueListenableBuilder(
+          valueListenable: profileWidget,
+          builder: (context, value, child) {
+            return CircleAvatar(
+              radius: MediaQuery.of(context).size.shortestSide/4,
+              child: profileWidget.value,
+            );
+          }
         ),
         Positioned(
           bottom:(radius) - (radius/(sqrt(2))) - 25,
           right:(radius) - (radius/(sqrt(2))) - 25,
-          child: Container(
-            height: 50,
-            width: 50,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.amber,
-            ),
+          child: FloatingActionButton(
+            backgroundColor: Theme.of(context).primaryColor,
+            onPressed: (){},
+            mini: true,
+            child: const Icon(Icons.photo_camera, color: Colors.white, size: 25),
           )
         )
       ],
@@ -154,6 +174,11 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
       controller: _emailController,
       validator: Validator.email,
       labelText: translationService.text('key_email'),
+      onChanged: (val){
+        if(userProfileDm?.profilePicUrl?.isEmpty ?? true){
+          setUpProfileWidget();
+        }
+      },
     );
   }
 
@@ -164,6 +189,11 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
         return Validator.lengthLimitter(value, isRequired: true, label: translationService.text('key_username'));
       },
       labelText: translationService.text('key_username'),
+      onChanged: (val){
+        if(userProfileDm?.profilePicUrl?.isEmpty ?? true){
+          setUpProfileWidget();
+        }
+      },
     );
   }
 
@@ -183,8 +213,26 @@ class _UserProfileScreenState extends BaseState<UserProfileScreen> {
       onPressed: () {
         if(_formKey.currentState!.validate()){
           FocusScope.of(context).unfocus();
+          userProfileDm ??= UserProfileDm();
+          userProfileDm?.userId = widget.userId ?? ApiClientService.currentUser?.uid;
+          userProfileDm?.email = _emailController.text;
+          userProfileDm?.userName = _userNameController.text;
+          userProfileDm?.status = _statusController.text;
+          profileBloc.add(SaveProfile(userProfileDm: userProfileDm));
         }
       },
     );
+  }
+
+  void setUpProfileWidget(){
+    if(userProfileDm?.profilePicUrl != null){
+
+    }
+    else if(_userNameController.text.isNotNullAndNotEmpty()){
+      profileWidget.value = LcText.pageHeader(text: _userNameController.text.characters.first.toUpperCase(), style: LcTextStyle.pageHeaderStyle()?.copyWith(fontSize: 96),);
+    }
+    else if(_emailController.text.isNotNullAndNotEmpty()){
+      profileWidget.value = LcText.pageHeader(text: _emailController.text.characters.first.toUpperCase(), style: LcTextStyle.pageHeaderStyle()?.copyWith(fontSize: 96),);
+    }
   }
 }
