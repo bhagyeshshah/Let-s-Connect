@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lets_connect/modules/feeds/bloc/feed_list_bloc.dart';
 import 'package:lets_connect/modules/feeds/model/feed_dm.dart';
+import 'package:lets_connect/modules/feeds/ui/create_feed_view.dart';
 import 'package:lets_connect/utils/base_state.dart';
 import 'package:lets_connect/utils/components/lc_activity_indicator.dart';
+import 'package:lets_connect/utils/components/lc_bottom_sheet.dart';
 import 'package:lets_connect/utils/components/lc_empty_screen.dart';
 import 'package:lets_connect/utils/components/lc_text.dart';
 import 'package:lets_connect/utils/lc_date_utils.dart';
@@ -60,6 +62,15 @@ class _FeedListScreenState extends BaseState<FeedListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          showLcBottomSheet(
+            context: context, 
+            heightFactor: 0.9,
+            child: const CreateFeedView());
+        },
+        child: const Icon(Icons.add),
+      ),
       body: GestureDetector(
         onTap: (){
           //Dismissing the keyboard
@@ -160,12 +171,11 @@ class _FeedListScreenState extends BaseState<FeedListScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
             backgroundImage: NetworkImage(item.authorPic ?? ''),
           ),
-          const SizedBox(width: 4.0,),
+          const SizedBox(width: 8.0,),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -42,6 +42,9 @@ class ApiClientService{
   static Future<List<FeedListDm>> fetchFeedList({num? lastReceivedPostId}) async{
     return await _handleApiException(FeedApi.fetchFeedList(lastReceivedPostId: lastReceivedPostId));
   }
+  static createFeed(FeedListDm feedListDm) async{
+    return await _handleApiException(FeedApi.createFeed(feedListDm));
+  }
 
 
   // HANDLE API EXCEPTIONS

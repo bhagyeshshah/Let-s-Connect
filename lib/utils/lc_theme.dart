@@ -163,6 +163,10 @@ class AppTheme {
     ),
     scaffoldBackgroundColor: lightThemeBackgroundColor,
     dialogBackgroundColor: lightThemeBackgroundColor,
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: lightThemeBackgroundColor,
+      surfaceTintColor: lightThemeBackgroundColor
+    ),
     dialogTheme: DialogTheme(
       backgroundColor: lightThemeBackgroundColor,
       surfaceTintColor: lightThemeBackgroundColor

@@ -4,17 +4,11 @@ import 'package:lets_connect/utils/app_storage_singleton.dart';
 import 'package:lets_connect/utils/lc_firebase_utils.dart';
 
 class FeedApi{
-  static createFeeds() async{
-    for(int i = 0; i <= 20; i++){
-      Future.delayed(const Duration(seconds: 1));
-      await LcFirebaseUtils.post(endPoint: ApiConstants.feeds, body: FeedListDm(
-        authorId: appStorageSingleton.loggedInUser?.userId,
-        authorName: appStorageSingleton.loggedInUser?.userName,
-        authorPic: appStorageSingleton.loggedInUser?.profilePicUrl,
-        description: 'Description $i',
-        title: 'Title $i',
-      ));
-    }
+  static createFeed(FeedListDm feedListDm) async{
+    feedListDm.authorId = appStorageSingleton.loggedInUser?.userId;
+    feedListDm.authorName = appStorageSingleton.loggedInUser?.userName;
+    feedListDm.authorPic = appStorageSingleton.loggedInUser?.profilePicUrl;
+    await LcFirebaseUtils.post(endPoint: ApiConstants.feeds, body: feedListDm);
   }
 
   static Future<List<FeedListDm>> fetchFeedList({num? lastReceivedPostId}) async{

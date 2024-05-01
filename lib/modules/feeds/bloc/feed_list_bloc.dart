@@ -63,7 +63,7 @@ class FeedListBloc extends Bloc<FeedEvent, FeedState>{
       }
 
       //API Call
-      List<FeedListDm>? result =  await ApiClientService.fetchFeedList(lastReceivedPostId: lastReceivedPostId);
+      List<FeedListDm>? result =  await ApiClientService.fetchFeedList(lastReceivedPostId: event.isRefresh ? null : lastReceivedPostId);
       bool hasReachedMax = false;
       if(result == null || (result.length < NumericConstants.defaultPageLimit)){
         hasReachedMax = true;

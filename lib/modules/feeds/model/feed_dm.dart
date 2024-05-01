@@ -44,13 +44,14 @@ class FeedListDm extends DataModel{
   List<String>? attachments;
 
   FeedListDm(
-      {this.id,
+      {
+      // this.id,
       this.title,
       this.description,
-      this.lastUpdatedAt,
-      this.authorId,
-      this.authorName,
-      this.authorPic,
+      // this.lastUpdatedAt,
+      // this.authorId,
+      // this.authorName,
+      // this.authorPic,
       this.likes,
       this.comments,
       this.attachments});

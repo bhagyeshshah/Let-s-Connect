@@ -4,6 +4,7 @@ class StringConstants{
 
 class NumericConstants{
   static const int defaultPageLimit = 10;
+  static const double borderRadius = 20;
 }
 
 class DashboardNavigationIndex{
