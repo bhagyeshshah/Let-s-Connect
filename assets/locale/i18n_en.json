@@ -49,5 +49,8 @@
     "key_feeds": "Feeds",
     "key_post": "Post",
     "key_post_about": "What is it about?",
-    "key_post_description": "Let us know more..."
+    "key_post_description": "Let us know more...",
+    "key_feed_posted_successfully": "Feed posted successfully!",
+    "key_like": "Like",
+    "key_comment": "Comment"
 }

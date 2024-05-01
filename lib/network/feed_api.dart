@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:lets_connect/modules/feeds/model/feed_dm.dart';
 import 'package:lets_connect/utils/api_constants.dart';
 import 'package:lets_connect/utils/app_storage_singleton.dart';
@@ -14,6 +16,5 @@ class FeedApi{
   static Future<List<FeedListDm>> fetchFeedList({num? lastReceivedPostId}) async{
     List response = await LcFirebaseUtils.fetchList(endPoint: ApiConstants.feeds, lastFetchedId: lastReceivedPostId);
     return response.map((e) => FeedListDm.fromJson(e)).toList();
-
   }
 }

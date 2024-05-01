@@ -50,6 +50,9 @@ class FeedListBloc extends Bloc<FeedEvent, FeedState>{
   FutureOr mapFetchFeedListToState(FetchFeedList event, Emitter<FeedState> emit) async{
     List<FeedListDm> preLoadedList = [];
     try{
+      if(event.isRefresh){
+        lastReceivedPostId = null;
+      }
       if(lastReceivedPostId == null){
         emit(FeedListLoading(isRefershing: event.isRefresh));
       }

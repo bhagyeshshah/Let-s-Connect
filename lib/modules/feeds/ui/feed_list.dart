@@ -11,6 +11,7 @@ import 'package:lets_connect/utils/components/lc_activity_indicator.dart';
 import 'package:lets_connect/utils/components/lc_bottom_sheet.dart';
 import 'package:lets_connect/utils/components/lc_empty_screen.dart';
 import 'package:lets_connect/utils/components/lc_text.dart';
+import 'package:lets_connect/utils/components/lc_text_styles.dart';
 import 'package:lets_connect/utils/lc_date_utils.dart';
 import 'package:lets_connect/utils/translation_service.dart';
 
@@ -126,7 +127,7 @@ class _FeedListScreenState extends BaseState<FeedListScreen> {
 
   Widget _buildList(){
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 0.0),
       child: RefreshIndicator(
         onRefresh: _onRefresh,
         backgroundColor: Theme.of(context).cardColor,
@@ -137,7 +138,9 @@ class _FeedListScreenState extends BaseState<FeedListScreen> {
           physics: const AlwaysScrollableScrollPhysics(),
           itemCount: hasReachedMax ? _feedItemList.length : (_feedItemList.length + 1),
           separatorBuilder: (context, index) {
-            return const Divider();
+            return const Divider(
+              thickness: 6,
+            );
           },
           itemBuilder: (context, index){
             if(_feedItemList.isNotEmpty){
@@ -157,13 +160,18 @@ class _FeedListScreenState extends BaseState<FeedListScreen> {
   }
 
   Widget _buildItem(FeedListDm item){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildProfileBar(item),
-        LcText.title(text: item.title ?? ''),
-        LcText.subTitle(text: item.description ?? ''),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildProfileBar(item),
+          LcText(text: item.title ?? '', style: LcTextStyle.title()?.copyWith(fontSize: 20),),
+          const SizedBox(height: 4.0,),
+          LcText(text: item.description ?? '', style: LcTextStyle.subTitle()?.copyWith(fontSize: 20)),
+          _buildReactionRow()
+        ],
+      ),
     );
   }
 
@@ -180,13 +188,38 @@ class _FeedListScreenState extends BaseState<FeedListScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                LcText.title(text: item.authorName ?? ''),
-                LcText.subTitle(text: LcDateDbUtils.feedTime(item.lastUpdatedAt?.toInt() ?? 0)),
+                LcText(text: item.authorName ?? '', style: LcTextStyle.title()?.copyWith(fontWeight: FontWeight.w500)),
+                LcText(text: LcDateDbUtils.feedTime(item.lastUpdatedAt?.toInt() ?? 0), style: LcTextStyle.subTitle()?.copyWith(color: Colors.black54)),
               ],
             )
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildReactionRow(){
+    return Column(
+      children: [   
+        const SizedBox(height: 8.0,),     
+        Divider(color: Colors.grey.withOpacity(0.25),),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildIcon(Icons.thumb_up_outlined, translationService.text('key_like')!),
+            _buildIcon(Icons.comment_outlined, translationService.text('key_comment')!),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildIcon(IconData icon, String caption){
+    return Column(
+      children: [
+        Icon(icon, color: Colors.black38,),
+        LcText(text: caption)
+      ],
     );
   }
 

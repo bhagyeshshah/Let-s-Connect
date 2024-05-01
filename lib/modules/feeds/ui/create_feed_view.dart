@@ -1,7 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lets_connect/modules/feeds/bloc/feed_form_bloc.dart';
+import 'package:lets_connect/modules/feeds/model/feed_dm.dart';
 import 'package:lets_connect/modules/user_profile/model/user_profile_dm.dart';
 import 'package:lets_connect/utils/app_storage_singleton.dart';
+import 'package:lets_connect/utils/base_state.dart';
+import 'package:lets_connect/utils/components/lc_activity_indicator.dart';
 import 'package:lets_connect/utils/components/lc_button.dart';
 import 'package:lets_connect/utils/components/lc_text.dart';
 import 'package:lets_connect/utils/components/lc_text_styles.dart';
@@ -14,46 +19,74 @@ class CreateFeedView extends StatefulWidget {
   State<CreateFeedView> createState() => _CreateFeedViewState();
 }
 
-class _CreateFeedViewState extends State<CreateFeedView> {
+class _CreateFeedViewState extends BaseState<CreateFeedView> {
 
   //Controllers
   TextEditingController titleController = TextEditingController();
   TextEditingController subTitleController = TextEditingController();
 
+  //Focus Nodes
   FocusNode subTitleFocus = FocusNode();
+
+  //Blocs
+  FeedFormBloc feedFormBloc = FeedFormBloc();
 
   @override
   void dispose() {
     titleController.dispose();
     subTitleController.dispose();
     subTitleFocus.dispose();
+    feedFormBloc.close();
     super.dispose();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            _buildTopRow(),
-           Expanded(
-             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildProfileBar(appStorageSingleton.loggedInUser),
-                  _buildTitleField(),
-                  _buildSubTitleField(),
-                ],
-              ),
-             ),
-           )
-            
-          ],
-        ),
+      body: BlocConsumer(
+        bloc: feedFormBloc,
+        listener: (context, state) {
+          if(state is FeedFormSaving){
+            LcRootActivityIndicator.showLoader(context);
+          }
+          else if(state is FeedFormSaved){
+            showSuccessMessage(translationService.text('key_feed_posted_successfully')!);
+            LcRootActivityIndicator.hideLoader(context);
+          }
+          if(state is FeedFormError){
+            showErrorMessage(state.error);
+            LcRootActivityIndicator.hideLoader(context);
+          }
+        },
+        builder: (context, state) {
+          return _buildBody();
+        }
+      )
+    );
+  }
+
+  Widget _buildBody(){
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          _buildTopRow(),
+          Expanded(
+            child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildProfileBar(appStorageSingleton.loggedInUser),
+                _buildTitleField(),
+                _buildSubTitleField(),
+              ],
+            ),
+            ),
+          )
+          
+        ],
       ),
     );
+
   }
 
   Widget _buildTopRow(){
@@ -80,7 +113,13 @@ class _CreateFeedViewState extends State<CreateFeedView> {
     return LcButton(
       onPressed: (){
         FocusScope.of(context).unfocus();
-        Navigator.of(context).maybePop();
+        feedFormBloc.add(SaveFeedForm(
+          formDm: FeedListDm(
+            title: titleController.text,
+            description: subTitleController.text
+          )
+          )
+        );
       }, 
       title: translationService.text('key_post'),
     );
