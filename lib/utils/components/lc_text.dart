@@ -7,6 +7,7 @@ enum LcTextType{
   chatMessageSent,
   title,
   subTitle,
+  empty,
   free
 }
 
@@ -33,6 +34,9 @@ class LcText extends StatelessWidget {
   LcText.subTitle({super.key, required this.text, this.style, this.textAlign}){
     _type = LcTextType.subTitle;
   }
+  LcText.empty({super.key, required this.text, this.style, this.textAlign}){
+    _type = LcTextType.empty;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +55,8 @@ class LcText extends StatelessWidget {
         return LcTextStyle.title();
       case LcTextType.subTitle:
         return LcTextStyle.subTitle();
+      case LcTextType.empty:
+        return LcTextStyle.emptyScreenTextStyle();
       default: return null;
     }
   }

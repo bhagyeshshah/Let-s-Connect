@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lets_connect/modules/dashboard/ui/lc_bottom_navigation_bar.dart';
+import 'package:lets_connect/modules/feeds/ui/feed_list.dart';
 import 'package:lets_connect/modules/more/ui/more_screen.dart';
 import 'package:lets_connect/utils/app_constants.dart';
-import 'package:lets_connect/utils/app_storage_singleton.dart';
 import 'package:lets_connect/utils/translation_service.dart';
 import '../../../../utils/base_state.dart';
 
@@ -64,7 +64,7 @@ class _DashboardScreenState extends BaseState<DashboardScreen> {
           child: IndexedStack(
             index: currentDashboardIndex,
             children: [
-              Container(),
+              const FeedListScreen(),
               Container(),
               const MoreScreen(),
             ],
@@ -77,8 +77,8 @@ class _DashboardScreenState extends BaseState<DashboardScreen> {
   List<BottomNavigationBarItem> _getNavigationBarItemList(){
     return [
       BottomNavigationBarItem(
-        icon: const Icon(Icons.home),
-        label: translationService.text("key_home"),
+        icon: const Icon(Icons.rss_feed_sharp),
+        label: translationService.text("key_feeds"),
       ),
       BottomNavigationBarItem(
         icon: const Icon(Icons.chat_bubble),

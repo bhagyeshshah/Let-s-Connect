@@ -12,7 +12,7 @@ class UserProfileApi{
       userProfileDm.profilePicUrl = await  LcFirebaseUtils.uploadFile(userProfileDm.profileImageFile!, endPoint: ApiConstants.users, value: userProfileDm.userId);
  
     }
-    await  LcFirebaseUtils.post(endPoint: ApiConstants.users, value: userProfileDm.userId, body: userProfileDm);
+    await  LcFirebaseUtils.put(endPoint: ApiConstants.users, value: userProfileDm.userId, body: userProfileDm);
   }
   
   static Future<UserProfileDm?> fetchProfile({required String userId}) async{

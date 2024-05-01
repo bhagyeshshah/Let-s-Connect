@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:lets_connect/utils/data_model.dart';
+import 'package:lets_connect/utils/lc_date_utils.dart';
 
 class UserProfileDm extends DataModel{
   String? userId;
@@ -9,7 +10,10 @@ class UserProfileDm extends DataModel{
   String? profilePicUrl;
   String? status;
   bool? isActive;
-  String? lastUpdatedAt;
+  num? lastUpdatedAt;
+  
+  //postId: liked
+  Map<String, bool>? likes;
 
   //For UI Purpose Only
   File? profileImageFile;
@@ -23,7 +27,8 @@ class UserProfileDm extends DataModel{
       this.status,
       this.isActive,
       this.lastUpdatedAt,
-      this.profileImageFile
+      this.profileImageFile,
+      this.likes
     }
   );
 
@@ -35,6 +40,7 @@ class UserProfileDm extends DataModel{
     status = json['status'];
     isActive = json['isActive'];
     lastUpdatedAt = json['lastUpdatedAt'];
+    likes = json['likes'];
   }
 
   @override
@@ -46,7 +52,8 @@ class UserProfileDm extends DataModel{
     data['profilePicUrl'] = profilePicUrl;
     data['status'] = status;
     data['isActive'] = isActive ?? true;
-    data['lastUpdatedAt'] = DateTime.now().toUtc().toString();
+    data['likes'] = likes;
+    data['lastUpdatedAt'] = LcDateDbUtils.getLastUpdatedNegativeTimeStamp();
     return data;
   }
 }

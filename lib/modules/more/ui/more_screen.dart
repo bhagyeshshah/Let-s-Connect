@@ -60,7 +60,7 @@ class _MoreScreenState extends State<MoreScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 LcText.title(text: userProfileDm?.userName ?? '',),
-                LcText.subTitle(text: userProfileDm?.status ?? '',),
+                LcText.subTitle(text: userProfileDm?.email ?? '',),
               ],
             )
           ),

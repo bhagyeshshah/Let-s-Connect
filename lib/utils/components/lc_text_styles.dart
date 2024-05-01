@@ -17,5 +17,8 @@ class LcTextStyle{
   static TextStyle? subTitle(){
     return currentTheme.textTheme.titleSmall;
   }
+  static TextStyle? emptyScreenTextStyle(){
+    return pageHeaderStyle()?.copyWith(fontSize: 20, fontWeight: FontWeight.w500);
+  }
 
 }

@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lets_connect/modules/feeds/model/feed_dm.dart';
 import 'package:lets_connect/modules/user_profile/model/user_profile_dm.dart';
+import 'package:lets_connect/network/feed_api.dart';
 import 'package:lets_connect/network/firebase_auth_service.dart';
 import 'package:lets_connect/network/user_profile_api.dart';
 import 'package:lets_connect/utils/api_exception.dart';
@@ -33,6 +35,12 @@ class ApiClientService{
 
   static Future<UserProfileDm?> fetchProfile({required String userId}) async{
     return await _handleApiException(UserProfileApi.fetchProfile(userId: userId));
+  }
+
+
+  //FEEDS
+  static Future<List<FeedListDm>> fetchFeedList({num? lastReceivedPostId}) async{
+    return await _handleApiException(FeedApi.fetchFeedList(lastReceivedPostId: lastReceivedPostId));
   }
 
 
